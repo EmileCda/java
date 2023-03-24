@@ -79,9 +79,9 @@ public class Main {
         return nombreOccurence ; 
     }
 // ---------------------------------------------------------------------------------
-// b. Créer une fonction tirage prenant en paramètre un tableau des différents symboles qu’il
-// est possible d’obtenir à chaque tirage (on considère qu’un caractère est un symbole, par
-// exemple ‘@’ ou ‘%’).
+// b. Créer une fonction tirage prenant en paramètre un tableau des différents 
+// symboles qu’il est possible d’obtenir à chaque tirage (on considère qu’un 
+// caractère est un symbole, par exemple ‘@’ ou ‘%’).
     public static char[] tirage(char[] tableauSymbole ) {
 
         char[] resultat = new char[3];
@@ -97,7 +97,8 @@ public class Main {
 
  public static void main(String[] args) {
         Scanner myScan = new Scanner(System.in);
-// table de symbole utilisé pour la représentation des rouleaux        
+// table de symbole utilisé pour la représentation des rouleaux
+// attention de ne pas prendre les valeurs du code ascii etendu
         char[] tabSymbole =  {'3','q','Z','$','*','@','#','£','€','&','%','ù','§','1','2','A','B'};
         int credit = 10 ;       // crédit initialisé en dure; evolution = passer en args
         boolean fin = false;
@@ -108,7 +109,7 @@ public class Main {
             String reponse = myScan.nextLine();  
 // choix possible : 1 = enter => chaine vide , 2 string de fin, 3 autres string (on ne joue pas)
             // taper entrer (reponse vide) choix 1
-            if (reponse.length() ==0){                          
+            if (reponse.length() ==0){                    
                 char[] tableauTirage = tirage(tabSymbole) ;
                 afficherTirage(tableauTirage);
                 int nbOccurence = calculOccurence(tableauTirage);
