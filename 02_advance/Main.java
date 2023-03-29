@@ -1,6 +1,6 @@
 import java.util.Scanner;
 import java.lang.Math;
-
+import java.lang.Exception;
 
 // ----------------------------------------------------------------------------
 public class Main {
@@ -13,161 +13,163 @@ public class Main {
             Scanner myScan = new Scanner(System.in);
             System.out.println("hello de lu");
 
-        // 6. Créer deux instances de Personnage
-        Personage titi = new Personage ("titi",100,1,50);
-        Personage toto = new Personage ("toto",10,10,10);
-        Personage lulu = new Personage (1000);
-        
-        titi.afficher();
-        toto.afficher();
-    // 7. La première attaque la seconde
-        titi.attaquer(toto) ;
-        titi.afficher(toto);
-        
-        System.out.print(titi);
-        System.out.println("riri: copie de titi");
-        Personage riri = new Personage (titi); // copie de titi
-        riri.setNom("riri");
+    try{
 
-        System.out.print(riri);
-        Personage roro = titi.copy(); // copie de titi
+    // 2. Dans le main, créer un rectangle r1 de 9 de longeur et de 6 de largeur
+    //     2.1 Afficher son périmétre et son aire
+        Rectangle r1 = new Rectangle("r1",9,6);
 
-        roro.setNom("roro");
-        System.out.print(roro);
+        System.out.println(r1);
 
-        System.out.printf("count %d\n", roro.getCount());
+        Rectangle r2 = new Rectangle(r1);
+        r2.setName("r2");
+        r2.setLongeur(10);
+        System.out.println(r2);
 
+        // 3.2 Créer un carré c1, de coté 12, dont on affichera le périmétre et l'aire
+
+        Carre c1 = new Carre("c1",12);
+        System.out.println(c1);
+
+        Carre c2 = new Carre(c1);
+        System.out.println(c2);
+
+
+        Rectangle r3 = new Rectangle("r3",0,6);
+        System.out.println(r3);
+        Rectangle r4 = new Rectangle("r4",10,-6);
+        System.out.println(r4);
+
+        Carre c3 = new Carre(-12);
+        System.out.println(c3);
+
+        Carre c4 = new Carre("c4",2);
+        System.out.println(c4);
+
+
+    }catch (Exception e) {
+                System.out.println(e); 
+        } 
     }
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 }
 
-  // 1. Créer une classe Personnage
 
-class Personage {
+   // 1. Créer une classe Rectangle
 
-    // 2. Ajouter à chaque personnage les attributs : sante, attaque et armure
-    // 9. Respecter le principe d'encapsulation pour notre classe Personnage
-        // 9.1 Tous les attributs doivent être privés
-    private String Nom;
-    private int sante;
-    private int attaque;
-    private int armure;
-    private final int MAX_ARMURE = 20; 
-    static private int count = 0 ;
+class Rectangle{
+
+    //     1.1 Elle dispose des attributs largeur et longeur
+    private int largeur;
+    private int longeur;
+    private String name;
+    public static int count; 
+    public static final String DEFAULT_NAME = "Default name";
 
 
+    //     1.2 Respecter l'encapsulation et ajouter un constructeur prenant en paramètre la largeur et la longeur
 
-// ============================================================================
-    // 3. Créer un constructeur permettant d'initialiser ces 3 attributs
-    public Personage(String nom, int sante, int attaque, int armure ){
-        this.setNom(nom);
-        this.setSante(sante);
-        this.setAttaque(attaque);
-        this.setArmure(armure);
-        this.count++;
+    Rectangle(String name, int myLong, int myLarg) throws  MauvaiseValeurException {
+        if ((myLong <=0) || (myLarg <=0))
+            throw new MauvaiseValeurException ("Rectangle :valeur positive svp"); 
+        else{
+            this.setLongeur(myLong) ;
+            this.setLargeur(myLarg) ;
+            this.setName(name) ;
+            this.count ++;
 
+        }
+    }
+    Rectangle( int myLong, int myLarg) throws  MauvaiseValeurException {
+       this (Rectangle.DEFAULT_NAME,myLong,myLarg);
     }
 
-    public Personage(String nom, int attaque, int armure ){
-        this(nom, 100, attaque, armure ) ;
-      
-
-    }
-    // 8. Créer une surcharge du constructeur de Personnage permettant de spécifier la valeur de son attribut santé
-    public Personage( int sante ){
-        this("Inconnu", sante, 0,0);
-    }
-        // 9.4 Réaliser un constructeur par copie : une surcharge de constructeur prenant en paramètre une instance de la classe et en copiant toutes les valeurs de ses attributs
-    // 10. A la suite de la création de Frodon, créer Sam par copie à Frodon
-    // 11. S'assurer que le nom de Sam soit bien "Sam"
-    public Personage( Personage personageCopie  ){
-        this(   personageCopie.getNom(), 
-                personageCopie.getSante(), 
-                personageCopie.getAttaque(), 
-                personageCopie.getArmure());
+    Rectangle (Rectangle newRectangle)throws MauvaiseValeurException{
+        this (
+            newRectangle.getName(),
+            newRectangle.getLongeur(),
+            newRectangle.getLargeur()
+        );
     }
 
-    public Personage  copy (){
 
-        return new Personage(this);
+    public int getLongeur(){
+        return this.longeur;
     }
+    // 5. Lors de la construction d'un Rectangle, vérifier que les valeurs de soient ni nulles ni négatives, auquel cas, envoyer une MauvaiseValeurException
+    // 6. Idem que pour le 5 concernant les valeurs du setter
+    public void setLongeur(int myLong)throws  MauvaiseValeurException{
 
-    public static int getCount(){
-
-        return count;
-    }
-// ============================================================================
-        // 9.2 Définir toutes les méthode comme publique
-        // 9.3 Réaliser les getters et setters de tous nos attributs
-    public  void setNom(String value){ this.Nom = value; }
-    public  String getNom(){  return this.Nom;  }
-
-    public  void setSante(int value){
-        int valueCheck = value;
-        if (sante < 0)
-            valueCheck = 0 ; 
-        else if ((sante > 1000))    
-            valueCheck = 1000 ; 
-
-        this.sante = valueCheck;
-    }
-    public  int getSante(){ return this.sante ;  }
-
-    private void diminuerSante(){
-
-        int dommage = this.MAX_ARMURE-this.getArmure();
-        this.setSante(this.getSante()- dommage);
-        this.setArmure(this.getArmure()- 1);
-    }
-
-    public  void setAttaque(int value){ this.attaque = value; }
-    public  int getAttaque(){ return this.attaque ; }
-    public  void setArmure(int value){   
-        if (value > this.MAX_ARMURE)
-            this.armure = this.MAX_ARMURE;
+        if (myLong <=0)
+            throw new MauvaiseValeurException ("setLongeur: valeur positive svp"); 
         else
-            this.armure = value;
-
+            this.longeur = myLong;
     }
-    public  int getArmure(){ return  this.armure ;  }
 
-
-    // 5. Ajouter au Personnage une méthode "attaquer" permettant d'attaquer un autre personnage
-    //     5.1  Cet autre personnage est donc un paramètre de la méthode
-    //     5.2 L'attaquant fait baisser la sante de l'adverssaire en fonction de son armure et de sa propre puissance d'attaque
-    public  void attaquer(Personage  adversaire){
-        System.out.printf("moi, %s j'attaque %s\n", this.getNom(), adversaire.getNom());
-        adversaire.diminuerSante();
-        this.setArmure(this.getArmure()- 1);
-        this.setAttaque(this.getAttaque()- 5);
-        
-
+    public int getLargeur(){
+        return this.largeur;
+    }
+    public void setLargeur(int myLarg)throws  MauvaiseValeurException{
+        if (myLarg <=0)
+            throw new MauvaiseValeurException ("setLargeur :valeur positive svp"); 
+        else
+            this.largeur = myLarg;
     }
 
 
-    // 4. Ajouter au Personnage une méthode "afficher" permettant de présenter le personnage
-    public  void afficher(){
-        System.out.printf(this.toString()    );
-
+    public String getName(){
+        return this.name;
     }
 
-    //     5.3 Ajouter un affichage du combat
-    public  void afficher(Personage  adversaire){
-         this.afficher();
-         adversaire.afficher();
+    public void setName(String value){
+        this.name = value;
+    }
 
+    //     1.3 Lui ajouter la méthode périmétre (retourne le périmétre du rectangle : (longeur + largeur) * 2)
+    public int perimetre(){
+        return 
+        (this.getLargeur() + this.getLongeur()) *2
+        ;
+    }
+
+    //     1.4 Lui ajouter la méthode aire (retourne l'aire du rectangle : (longeur * largeur) )
+    public int aire(){
+        return (this.getLargeur() * this.getLongeur() );
     }
 
     public  String toString() {
-        return String.format ("nom : %s sante : %d attaque : %d armure : %d\n",
-        this.getNom(), this.getSante(),this.getAttaque(),this.getArmure());
+        return String.format ("[%d] name : %s longueur: %s largeur : %d périmètre %s aire %d ",
+        this.count,this.getName() == this.DEFAULT_NAME ? "" : this.getName(),this.getLongeur(),this.getLargeur(),this.perimetre(),this.aire());
 
     }
 
 
+}
 
+    // 3. Créer une classe Carre
 
+class Carre extends Rectangle { 
+        // 3.1 Lui ajouter un constructeur ne prenant qu'un unique paramètre coté, faisant appel au constructeur du rectangle
+    Carre (int cote) throws MauvaiseValeurException{
+        super( cote, cote);
+    } 
+
+    Carre (String name, int cote) throws MauvaiseValeurException{
+        super( name,cote, cote);
+    } 
+
+    Carre (Carre carreCopi) throws MauvaiseValeurException{
+        this ( carreCopi.getLargeur()  );
+    }
 
 }
+
+// 4. Créer une nouvelle Exception : MauvaiseValeurException
+class MauvaiseValeurException extends Exception{
+    MauvaiseValeurException (String infos){
+        super(infos);
+    }
+}
+
 
