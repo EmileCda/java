@@ -1,175 +1,137 @@
 import java.util.Scanner;
-import java.lang.Math;
-import java.lang.Exception;
+// import java.lang.Math;
+import java.util.HashMap;
 
-// ----------------------------------------------------------------------------
 public class Main {
-// ----------------------------------------------------------------------------
-    public static int template(String reponse) {
-        return 0;
-    }
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
     public static void main(String[] args) {
-            Scanner myScan = new Scanner(System.in);
-            System.out.println("hello de lu");
+        Scanner myScan = new Scanner(System.in);
+        String[] horseName = {"Houra","Girelle","Totor","Lunaire","Romual","Brutus"};
+            // 1. Créer un hashmap contenant 6 chevaux sous forme de chaine de caractère ("Bob", "Hypotipus", "Lila")
+        HashMap <String,Integer> runnerHashMap = new HashMap <String,Integer> ();
+            // 2. Chaque cheval commence avec la valeur 0
 
-    try{
-
-    // 2. Dans le main, créer un rectangle r1 de 9 de longeur et de 6 de largeur
-    //     2.1 Afficher son périmétre et son aire
-        Rectangle r1 = new Rectangle("r1",9,6);
-
-        System.out.println(r1);
-
-        Rectangle r2 = new Rectangle(r1);
-        r2.setName("r2");
-        r2.setLongeur(10);
-        System.out.println(r2);
-
-        // 3.2 Créer un carré c1, de coté 12, dont on affichera le périmétre et l'aire
-
-        Carre c1 = new Carre("c1",12);
-        System.out.println(c1);
-
-        Carre c2 = new Carre(c1);
-        System.out.println(c2);
-
-
-        Rectangle r3 = new Rectangle("r3",0,6);
-        System.out.println(r3);
-        Rectangle r4 = new Rectangle("r4",10,-6);
-        System.out.println(r4);
-
-        Carre c3 = new Carre(-12);
-        System.out.println(c3);
-
-        Carre c4 = new Carre("c4",2);
-        System.out.println(c4);
-
-
-    }catch (Exception e) {
-                System.out.println(e); 
-        } 
-    }
-
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-}
-
-
-   // 1. Créer une classe Rectangle
-
-class Rectangle{
-
-    //     1.1 Elle dispose des attributs largeur et longeur
-    private int largeur;
-    private int longeur;
-    private String name;
-    public static int count; 
-    public static final String DEFAULT_NAME = "Default name";
-
-
-    //     1.2 Respecter l'encapsulation et ajouter un constructeur prenant en paramètre la largeur et la longeur
-
-    Rectangle(String name, int myLong, int myLarg) throws  MauvaiseValeurException {
-        if ((myLong <=0) || (myLarg <=0))
-            throw new MauvaiseValeurException ("Rectangle :valeur positive svp"); 
-        else{
-            this.setLongeur(myLong) ;
-            this.setLargeur(myLarg) ;
-            this.setName(name) ;
-            this.count ++;
-
+        int maxNameSize = 0 ;
+        int maxStep = 0 ;
+        String horseWinner = horseName[0] ;
+        for (String name : horseName){
+            if (name.length() > maxNameSize)
+                maxNameSize = name.length();
+            runnerHashMap.put(name,0);
+            Integer position = runnerHashMap.get(name) ;
         }
+
+
+        // 3. Chaque cheval évoluera d'une valeur de 1 à 5 unités à chaque tour de boucle, 
+        // que l'on répétera tant qu'aucun cheval ne sera arrivé (100)
+        boolean fin = false ; 
+        int lap = 0 ;
+        do{
+            lap++;
+            for (String name : horseName){
+                int advancement = runnerHashMap.get(name)+randInt(1,5);
+                runnerHashMap.put(name,advancement);
+                if (advancement>maxStep){
+                    maxStep = advancement;
+                    horseWinner = name;
+                }  
+
+
+            }
+        
+       // 4. A chaque tour de boucle, afficher sur chaque ligne le nom du cheval et 
+        //    une barre de progression sous la forme de '--------'
+
+            displayRace(horseName,runnerHashMap,maxNameSize);
+            
+             for (String name : horseName){
+                if (runnerHashMap.get(name) >= 100 )
+                    fin = true ;
+            }
+            System.out.printf("premier %s avance [%d]\n",horseWinner,maxStep);
+            System.out.printf("tour [%d] taper entrée pour une nouveau tour",lap);
+            myScan.nextLine();
+
+        }while (!fin) ;
+       // 5. A la fin, afficher le nom du vainqueur
+       System.out.printf("\ngagnant %s\n",horseWinner);
+
+        // displayWinner(horseName,runnerHashMap);
+
     }
-    Rectangle( int myLong, int myLarg) throws  MauvaiseValeurException {
-       this (Rectangle.DEFAULT_NAME,myLong,myLarg);
+// ---------------------------------------------------------------------------------
+// fonction random qui renvoie une fonction entre minValue et maxValue
+// attention dans le cas de l'utilisation pour indexer un tableau (maxIndex = length)    
+    public static void  displayRace(String[] horseName,HashMap myHashMap, int maxNameSize){
+
+        char[] symbole = {'-','=','*','%',':','~','+','_','#'};
+        clearScreen ();
+        int row = 10 ; 
+        int rowIndex = 0 ; 
+        int columHorseName = 10 ;
+        int raceColumn = maxNameSize +  columHorseName+2 ;
+        int finish = maxNameSize + columHorseName+2 + 100 +1 ;
+        
+        for (String name : horseName){
+            gotoXY (row,columHorseName);
+            System.out.print(name);
+            // Integer position = myHashMap.get(name) ;
+            int position = (int) myHashMap.get(name) ;
+            gotoXY (row,raceColumn);
+            for (int index = 0 ; index < position; index ++)
+                System.out.print(symbole[rowIndex]);
+
+            System.out.println('>');
+            gotoXY (row,finish);
+            System.out.println('|');
+            row ++ ;
+            rowIndex++ ;
+        }
+
     }
+    // ---------------------------------------------------------------------------------
+// fonction random qui renvoie une fonction entre minValue et maxValue
+// attention dans le cas de l'utilisation pour indexer un tableau (maxIndex = length)    
+    public static void  displayWinner(String[] horseName,HashMap myHashMap){
+        for (String name : horseName){
+            if ((int) myHashMap.get(name) >=100){
+                System.out.printf(" le gagnant : %s \n",name);
+                break;
+            }
+        }
 
-    Rectangle (Rectangle newRectangle)throws MauvaiseValeurException{
-        this (
-            newRectangle.getName(),
-            newRectangle.getLongeur(),
-            newRectangle.getLargeur()
-        );
     }
-
-
-    public int getLongeur(){
-        return this.longeur;
+// ---------------------------------------------------------------------------------
+// fonction random qui renvoie une fonction entre minValue et maxValue
+// attention dans le cas de l'utilisation pour indexer un tableau (maxIndex = length)    
+    public static int randInt(int minValue, int maxValue) {
+        return   (int)(Math.random() * (maxValue + 1-minValue) + minValue );  
     }
-    // 5. Lors de la construction d'un Rectangle, vérifier que les valeurs de soient ni nulles ni négatives, auquel cas, envoyer une MauvaiseValeurException
-    // 6. Idem que pour le 5 concernant les valeurs du setter
-    public void setLongeur(int myLong)throws  MauvaiseValeurException{
-
-        if (myLong <=0)
-            throw new MauvaiseValeurException ("setLongeur: valeur positive svp"); 
-        else
-            this.longeur = myLong;
+// ---------------------------------------------------------------------------------
+ 
+    public static void  gotoXY (int row, int column){
+        char escCode = 0x1B;
+        System.out.print(String.format("%c[%d;%df",escCode,row,column));
     }
-
-    public int getLargeur(){
-        return this.largeur;
-    }
-    public void setLargeur(int myLarg)throws  MauvaiseValeurException{
-        if (myLarg <=0)
-            throw new MauvaiseValeurException ("setLargeur :valeur positive svp"); 
-        else
-            this.largeur = myLarg;
-    }
-
-
-    public String getName(){
-        return this.name;
-    }
-
-    public void setName(String value){
-        this.name = value;
-    }
-
-    //     1.3 Lui ajouter la méthode périmétre (retourne le périmétre du rectangle : (longeur + largeur) * 2)
-    public int perimetre(){
-        return 
-        (this.getLargeur() + this.getLongeur()) *2
-        ;
-    }
-
-    //     1.4 Lui ajouter la méthode aire (retourne l'aire du rectangle : (longeur * largeur) )
-    public int aire(){
-        return (this.getLargeur() * this.getLongeur() );
-    }
-
-    public  String toString() {
-        return String.format ("[%d] name : %s longueur: %s largeur : %d périmètre %s aire %d ",
-        this.count,this.getName() == this.DEFAULT_NAME ? "" : this.getName(),this.getLongeur(),this.getLargeur(),this.perimetre(),this.aire());
-
+// ---------------------------------------------------------------------------------
+    public static void  clearScreen (){
+        
+        System.out.print("\033\143");
     }
 
 
 }
 
-    // 3. Créer une classe Carre
 
-class Carre extends Rectangle { 
-        // 3.1 Lui ajouter un constructeur ne prenant qu'un unique paramètre coté, faisant appel au constructeur du rectangle
-    Carre (int cote) throws MauvaiseValeurException{
-        super( cote, cote);
-    } 
 
-    Carre (String name, int cote) throws MauvaiseValeurException{
-        super( name,cote, cote);
-    } 
 
-    Carre (Carre carreCopi) throws MauvaiseValeurException{
-        this ( carreCopi.getLargeur()  );
-    }
 
-}
 
-// 4. Créer une nouvelle Exception : MauvaiseValeurException
-class MauvaiseValeurException extends Exception{
-    MauvaiseValeurException (String infos){
-        super(infos);
-    }
-}
-
+            // Principe : Course de chevaux
+            //     Bob       : ------------                                         |
+            //     Stephan   : ------------------------                             |
+            //     StBernard : -------                                              |
+            
 
