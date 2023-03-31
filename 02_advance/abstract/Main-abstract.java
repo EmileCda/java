@@ -29,9 +29,12 @@ public class Main {
                 case 1 : myForm = new Carre(Konsole.randInt(1,10)); break;
     // 6. Dans le main, dans la liste de formes, ajouter quelques cercles                
                 default : myForm = new Cercle(Konsole.randInt(1,10)); break;
+
             }
+    
             forme2dList.add( myForm);
         }
+
 
     // 4. Utiliser les méthode (2) et (3) sur notre ensemble de Rectangles et Carré (et afficher les résultats)
 
@@ -54,7 +57,9 @@ public class Main {
         int returnValue = 0 ; 
         while (myIterator.hasNext())
         {
+
            returnValue+= myIterator.next().aire();
+            
         }
         return returnValue; 
     }
@@ -73,9 +78,13 @@ public class Main {
     }
     // ---------------------------------------------------------------------------------
     public static void display (ArrayList<Forme2D> formList) {
+        
         for ( Forme2D myForm : formList)
         {
             System.out.printf("%s\n",myForm);
+            // System.out.printf("%.2f\n",myForm.perimetre());
+            // System.out.printf("%.2f\n",myForm.aire());
+            
         }
     }
 
@@ -178,6 +187,8 @@ class Carre extends Rectangle {
     public  String toString() {
         return String.format ("Carre        coté : %2d              périmètre %2.2f aire %2.2f",
         this.getLargeur(),this.perimetre(),this.aire());
+        // return String.format ("Carre        coté : %2d",
+        // this.getLargeur());
 
     }
 
