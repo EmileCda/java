@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 // import  packMotor.Energie;
 // import  packMotor.EnumTransmission;
-import  packMotor.*;
+import  adaptator.*;
 
 // ----------------------------------------------------------------------------
 
@@ -18,90 +18,64 @@ public class Main {
     }
 // ----------------------------------------------------------------------------
     public static void main(String[] args) {
+        Box myBox = new Box (5,3);
+        
+        Rectangle rectangle = new Rectangle(1,2);
 
-        CarMaker bagnolMaker = new CarMaker() ;
-        // Vehicle myCar = bagnolMaker.buildSportVehicule();
-        // Vehicle myCar2 = bagnolMaker.buildCityVehicule();
+        myBox.insertRectangle (new Rectangle(1,1));
+        myBox.insertRectangle (new Rectangle(2,2));
+        myBox.insertRectangle (new Rectangle(3,3));
+        myBox.insertRectangle (new Rectangle(4,4));
+        myBox.insertRectangle (new Rectangle(5,1));
+        myBox.insertRectangle (new Rectangle(2,4));
 
-        // System.out.println(myCar);
-        // System.out.println(myCar2);
-
-        Driver alain = new Driver("Alain",true,true,15);
-        Driver lulu = new Driver("Lulu",true,false,3);
-        Driver riri = new Driver("Riri",true,true,2);
-        Driver fifi = new Driver("Fifi",true,false,2);
-        Driver titi = new Driver("titi",false,false,2);
-
-        System.out.println(Dealer.dealVehicle(alain));
-        System.out.println(Dealer.dealVehicle(lulu));
-        System.out.println(Dealer.dealVehicle(riri));
-        System.out.println(Dealer.dealVehicle(fifi));
-        System.out.println(Dealer.dealVehicle(titi));
+        Circle myCircle =  new Circle(3);
+        myBox.insertRectangle (new Adaptator(myCircle));
+        myBox.insertRectangle (new Adaptator(new Circle(1)));
+        System.out.println(myBox);
 
 
     }
-
 }
 
+ 
 
 
+class Adaptator extends Rectangle{
 
 
-
-
+    public Adaptator(Circle myCircle){
+        super (myCircle.getRadius() *2,myCircle.getRadius() *2);
+        // this.setLargeur(myCircle.getRadius *2);
+        // this.setLongueur(myCircle.getRadius *2);
+    }
+}
 
 /*
-    1. Créer une classe Moteur comportant un nom, une enumeration avec les valeur "Thermique", "Electrique", "Gaz", et une puissance
-    2. Transmission comportant un nom, une enumeration "Manuelle", "Semi-auto", "automatique"
-    3. Réservoir comportant une capacité (entier)
+
+    1. Créer une classe Rectangle
+        1.1 Ajouter les attributs longueur et largeur
+    2. Créer une classe Boite
+        2.1 Ajouter les dimentions de l'ouverture longueur et largeur
+        2.2 Ajouter une méthode insererRectangle prennant en paramètre un Rectangle
+        2.3 Si la forme donnée en paramètre est assez petite pour rentrer, on l'ajoute à une liste d'élements que contient la boite
+        2.4 Créer une méthode afficher contenant
     
-    4. Créer une classe vehicule comportant un nom de modèle, un moteur, une transmission et un réservoir
-    5. Créer une classe voiture et une classe moto héritants tous deux de véhicule
-
-     6. Leur ajouter des setter permettant de définir les composants
-
-       7. Créer une interface Concession
-    8. Dans Concession ajouter les méthodes construire_vehicule_sport et construire_vehicule_citadin, retournant un Vehicule
-    9. Créer 2 Concession différentes (implémentant l'interface Concession), l'un construisant un véhicule de type Voiture et l'autre de type Moto
-
-    10. Dans le main, créer les 4 type de véhicules à partir de nos builders
-*/
+    3. Dans le main, créer une boite et 3 rectangles
+        3.1 Insérer les 3 rectangles
+        3.2 Afficher le contenant
 
 
-/*
-    11. Créer une classe Conducteur possédant les attributs nom, permis_a (bool), permis_b (bool), annees_exprience (int)
-    12. Créer une classe Vendeur possédant une méthode "vendre_vehicule" prenant en paramètre un conducteur et retournant le vehicule qu'on lui vend (créer un affichage)
+- Partie Adaptateur --
+    -----------------------
+
+    4. Créer une classe Rond ayant pour attributs un rayon (double)
+        4.1 Ajouter un constructeur et un getter
     
-    13. Si l'utilisateur posséde un permis B, on lui vend une voiture de chez DeluxeCars et si il possède un permis A, on lui vend une Moto de chez NostalMotors
-    14. Si l'utilisateur posséde au moins 3 ans d'expérience, on l'oriente vers un véhicule de sport, sinon, plutot vers un citadin.
+    5. Créer une classe Adaptateur, héritant de Rectangle, prenant en parmètre dans son constructeur un Rond
+        5.1 Initialiser dans le constructeur les attributs de l'adaptateur avec ceux du Rond passé en paramètre
+    6. Créer un rond et tenter de l'ajouter à la boite avec un adaptateur
 
-*/
 
-/*
--- Partie création d'application --
-    -----------------------------------
-
-    15. Répartir les différentes classes et énumération dans différents fichier (un fichier par entité )
-    16. Créer des packages (et donc une arborescence) tel que :
-        - vehicules
-            - Vehicule.java
-            - Moto.java
-            - Voiture.java
-            - Composants
-                - Enums
-                    - MoteurType.java
-                    - TransmissionType.java
-                - Moteur.java
-                - Transmission.java
-                - Reservoir.java
-        - concessions
-            - Concession.java
-            - NostalMotors.java
-            - DeluxCars.java
-        - users
-            - Vendeur.java
-            - Conducteur.java
-
-    17. Créer un .jar exécutable via "java -jar"
 
 */
