@@ -3,12 +3,8 @@ import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Iterator;
 import konsole.Konsole;
-import packClass.Forme2D;
-
 // ----------------------------------------------------------------------------
-
 public class Main {
-
 // ----------------------------------------------------------------------------
     public static int template(String reponse) {
         return 0;
@@ -19,49 +15,8 @@ public class Main {
             System.out.println("hello de lu");
             Konsole.clearScreen();
             Konsole.setColor (Konsole.Color.YELLOW);
-// 7. Dans le main, créer une liste de forme 3D dans laquelle on en ajoutera 5 de différent types
-        ArrayList<Forme3D> forme3dList = new ArrayList<Forme3D>();
-
-        for (int index = 0 ; index < 5 ; index ++){
-            Rectangle3D  myForm = new 
-            Rectangle3D(Konsole.randDouble(1,10),
-                        Konsole.randDouble(1,10),
-                        Konsole.randDouble(1,10),
-                        ColorEnum.values()[Konsole.randInt(0,4)]
-                        );
- // 6. Colorer quelques unes des formes créées dans le main
-
-            forme3dList.add( myForm);
-        }
-
-        for (int index = 0 ; index < 5 ; index ++){
-            Cylindre  myForm = new 
-            Cylindre(   Konsole.randDouble(1,10),
-                        Konsole.randDouble(1,10),
-                        ColorEnum.values()[Konsole.randInt(0,4)]);
-
-            forme3dList.add( myForm);
-        }
-
-
-// 8. Calculer et afficher le total des volumes de ces formes
-        double volume = 0;
-        for ( Forme3D myForm : forme3dList)
-        {
-            System.out.println(myForm);
-            volume+= myForm.volume();
-        }
-
-        System.out.printf("total volume : %.2f\n", volume);
-
-    }
-
-// ---------------------------------------------------------------------------------
-// 2. Créer une méthode dans Main permettant de calculer la somme des périmétres d'un ensemble de formes
-// 4. Modifier les méthodes sum_perimeters, sum_surfaces et le main pour que le polymorphisme à base de Rectangle se fasse maintenant à base de Forme2D
- // 1. Créer un ensemble de 6 Rectangles ou Carrés aux cotés aléatoires (entree 2 et 10)
-
-public static void testMainAbstract(){
+    
+    // 1. Créer un ensemble de 6 Rectangles ou Carrés aux cotés aléatoires (entree 2 et 10)
         ArrayList<Forme2D> forme2dList = new ArrayList<Forme2D>();
 
         for (int index = 0 ; index < 15 ; index ++){
@@ -86,9 +41,12 @@ public static void testMainAbstract(){
         System.out.printf("Total Perimeter : %d Total Area %s \n",resultPerimeter,resultArea);
 
 
-}
+    }
 
 // ---------------------------------------------------------------------------------
+
+    // 2. Créer une méthode dans Main permettant de calculer la somme des périmétres d'un ensemble de formes
+        // 4. Modifier les méthodes sum_perimeters, sum_surfaces et le main pour que le polymorphisme à base de Rectangle se fasse maintenant à base de Forme2D
 
     public static int  computeTotalAera(ArrayList<Forme2D> formList) {
         // using iterator 
@@ -147,15 +105,141 @@ public static void testMainAbstract(){
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 }
 
+//    3. Faire hériter Rectangle de Forme2D
+
+class Rectangle extends Forme2D{
+
+    //     1.1 Elle dispose des attributs largeur et longeur
+    private int largeur;
+    private int longeur;
+
+
+    //     1.2 Respecter l'encapsulation et ajouter un constructeur prenant en paramètre la largeur et la longeur
+
+    Rectangle(int myLong, int myLarg){
+        this.setLongeur(myLong) ;
+        this.setLargeur(myLarg) ;
+    }
+    Rectangle (Rectangle newRectangle){
+        this (
+            newRectangle.getLongeur(),
+            newRectangle.getLargeur()
+        );
+    }
 
 
 
+    public int getLongeur(){
+        return this.longeur;
+    }
+    public void setLongeur(int myLong){
+        this.longeur = myLong;
+    }
 
-  
+    public int getLargeur(){
+        return this.largeur;
+    }
+    public void setLargeur(int myLarg){
+        this.largeur = myLarg;
+    }
+
+    //     1.3 Lui ajouter la méthode périmétre (retourne le périmétre du rectangle : (longeur + largeur) * 2)
+    public double perimetre(){
+        return 
+        (this.getLargeur() + this.getLongeur()) *2.0
+        ;
+    }
+
+    //     1.4 Lui ajouter la méthode aire (retourne l'aire du rectangle : (longeur * largeur) )
+    public double aire(){
+        return (double)(this.getLargeur() * this.getLongeur() );
+    }
+
+    public  String toString() {
+        return String.format ("Rectangle longueur: %2d largeur : %2d périmètre %2.2f aire %2.2f",
+        this.getLongeur(),this.getLargeur(),this.perimetre(),this.aire());
+
+    }
 
 
+}
 
-// -------------------- consigne abstract -------------------
+    // 3. Créer une classe Carre
+
+class Carre extends Rectangle { 
+        // 3.1 Lui ajouter un constructeur ne prenant qu'un unique paramètre coté, faisant appel au constructeur du rectangle
+    Carre (int cote){
+        super( cote, cote);
+    } 
+
+    Carre (Carre carreCopi){
+        this ( carreCopi.getLargeur()  );
+    }
+    public  String toString() {
+        return String.format ("Carre        coté : %2d              périmètre %2.2f aire %2.2f",
+        this.getLargeur(),this.perimetre(),this.aire());
+
+    }
+
+}
+
+
+    // 1. Créer une nouvelle classe abstraite Forme2D
+
+abstract class Forme2D  { 
+        // 3.1 Lui ajouter un constructeur ne prenant qu'un unique paramètre coté, faisant appel au constructeur du rectangle
+    Forme2D (){
+    } 
+    // 2. Lui ajouter les méthodes abstraites périmetre et aire
+
+    public abstract double  perimetre();
+
+    public abstract double  aire();
+
+}
+
+
+// 5. Créer une nouvelle classe Cercle, non abstraite, héritant de Forme2D et disposant de l'attribut rayon
+
+class Cercle extends Forme2D { 
+    private int radius; 
+    
+    Cercle (int myRadius){
+        this.setRadius(myRadius);
+    } 
+
+    Cercle (Cercle circleCopy){
+        this ( circleCopy.getRadius() );
+    } 
+
+    public void setRadius(int value){
+
+        this.radius = value; 
+    }
+    public int getRadius(){
+
+        return this.radius ;
+    }
+
+    public double perimetre(){
+
+        return 2* Math.PI* getRadius() ;
+    }
+    public double aire(){
+
+        return  Math.PI * getRadius()* getRadius() ;
+    }
+
+
+    public  String toString() {
+        return String.format ("cercle de rayon   : %2d              périmètre %02.2f aire %02.2f",
+        this.getRadius(),this.perimetre(),this.aire());
+
+    }
+
+}
+
+// -------------------- consigne  -------------------
 /*
     1. Créer une nouvelle classe abstraite Forme2D
     2. Lui ajouter les méthodes abstraites périmetre et aire
@@ -163,31 +247,4 @@ public static void testMainAbstract(){
     4. Modifier les méthodes sum_perimeters, sum_surfaces et le main pour que le polymorphisme à base de Rectangle se fasse maintenant à base de Forme2D
     5. Créer une nouvelle classe Cercle, non abstraite, héritant de Forme2D et disposant de l'attribut rayon
     6. Dans le main, dans la liste de formes, ajouter quelques cercles
-*/
-
-
-
-// -------------------- consigne  implement -------------------
-/*
-    1. Transformer la classe Forme en interface
-    2. Créer une classe Forme3D implémentant l'interface Forme
-    3. Ajouter l'attribut hauteur à la Forme3D
-    4. Ajouter la méthodes abstraites volume
-    5. Créer une classe Rectangle3D
-    6. Créer une classe Cylindre
-
-    7. Dans le main, créer une liste de forme 3D dans laquelle on en ajoutera 5 de différent types
-    8. Calculer et afficher le total des volumes de ces formes
-*/
-
-
-//---------------------- consigne enum 
-/*
-     1. Créer une énumération Colors
-    2. Lui ajouter 5 couleurs différentes
-    3. Ajouter un attribut color à la Forme3D et lui définir une valeur par défaut
-    4. Ajouter un constructeur à Forma3D permettant de spécifier une couleur (idem pour Rectangle3D et cylindre)
-    5. Ajouter un setter à Forme3D permettant de changer la couleur
-
-    6. Colorer quelques unes des formes créées dans le main
 */
