@@ -47,10 +47,7 @@ public class EncryptFile extends Stdio {
     }
     public void setOffset(int value){
         this.setOriginOffset(value);
-
-        // int modulo = 127-32 ;
-        // int plage = value%modulo ;
-        int plage = value%127  ;
+        int plage = value%92  ;
         this.offset = plage ;
 
     }
@@ -74,7 +71,7 @@ public class EncryptFile extends Stdio {
 
     public  void  add(String value){
 
-        this.content +=  value + "\n"; 
+       this.content += this.encode( value) ;
 
     }
 
@@ -89,10 +86,15 @@ public class EncryptFile extends Stdio {
         String valueReturn = "";
         for (int index = 0 ; index < value.length(); index ++)
         {
-            int asciiValue= (int) value.charAt(index)+ getOffset() -32 ;
-            asciiValue= (asciiValue + 92)%92;
-            asciiValue+=32;
-            valueReturn += (char) asciiValue ; 
+            int asciiValue= (int) value.charAt(index) ;
+            if (asciiValue>=32 && asciiValue<=127){
+                 asciiValue= asciiValue+ getOffset() -32 ;
+                asciiValue= (asciiValue + 92)%92;
+                asciiValue+=32;
+                valueReturn += (char) asciiValue ; 
+            }else
+                valueReturn +=  value.charAt(index); 
+
         }
         return valueReturn;
     }
@@ -103,10 +105,15 @@ public class EncryptFile extends Stdio {
         String valueReturn = "";
         for (int index = 0 ; index < value.length(); index ++)
         {
-            int asciiValue= (int) value.charAt(index)- getOffset() -32 ;
-            asciiValue= (asciiValue + 92)%92;
-            asciiValue+=32;
-            valueReturn += (char) asciiValue ; 
+            int asciiValue= (int) value.charAt(index) ;
+            if (asciiValue>=32 && asciiValue<=127){
+                asciiValue= asciiValue+- getOffset() -32 ;
+                asciiValue= (asciiValue + 92)%92;
+                asciiValue+=32;
+                valueReturn += (char) asciiValue ; 
+
+            }else
+                valueReturn += value.charAt(index) ; 
         }
         return valueReturn;
     }

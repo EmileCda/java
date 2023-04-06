@@ -18,6 +18,7 @@ public class Konsole{
         System.out.print("\033\143");
     }
 
+// ---------------------------------------------------------------------------------
     public static void  setColor (Color myColor){
 
         String choice = "\u001B[0m";
@@ -33,6 +34,23 @@ public class Konsole{
             default : choice = "\u001B[0m"; break;
         }
          System.out.print(choice);
+    }
+//-----------------------------------------------------------------------
+    public static String  changeColor (Color myColor){
+
+        String choice = "\u001B[0m";
+        switch (myColor){
+            case BLACK : choice = "\u001B[30m"; break;
+            case  RED : choice = "\u001B[31m"; break;
+            case  GREEN : choice = "\u001B[32m"; break;
+            case  YELLOW : choice = "\u001B[33m"; break;
+            case  BLUE : choice = "\u001B[34m"; break;
+            case  PURPLE : choice = "\u001B[35m"; break;
+            case  CYAN : choice = "\u001B[36m"; break;
+            case  WHITE: choice = "\u001B[37m"; break;
+            default : choice = "\u001B[0m"; break;
+        }
+         return choice ;
     }
 //-----------------------------------------------------------------------
 // fonction random qui renvoie une fonction entre minValue et maxValue
